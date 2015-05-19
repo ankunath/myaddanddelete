@@ -1,3 +1,5 @@
+var mongoose = require('mongoose');
 
-var mongoose =require('mongoose');
-module.export =mongoose.model('Todo',{txt :String,done :Boolean});
+module.exports = mongoose.model('Todo', {
+	text : {type : String, default: ''}
+});
