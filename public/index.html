@@ -20,15 +20,16 @@
 	</style>
 
 	<!-- SPELLS -->
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script><!-- load angular -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script><!-- load angular -->
+	<script src="js/core.js"></script> <!-- load our main application -->
+
+	<script src="js/services/todos.js"></script> <!-- load our todo service -->
 
 	<script src="js/controllers/main.js"></script> <!-- load up our controller -->
-	<script src="js/services/todos.js"></script> <!-- load our todo service -->
-	<script src="js/core.js"></script> <!-- load our main application -->
 
 </head>
 <!-- SET THE CONTROLLER -->
-<body ng-controller="mainController">
+<body ng-controller="mainController" >
 	<div class="container">
 
 		<!-- HEADER AND TODO COUNT -->
@@ -38,15 +39,26 @@
 
 		<!-- TODO LIST -->
 		<div id="todo-list" class="row">
-			<div class="col-sm-4 col-sm-offset-4">
+			<div class="col-sm-4 col-sm-offset-4"  >
 
 				
 
 				<!-- LOOP OVER THE TODOS IN $scope.todos -->
-				<div class="checkbox" ng-repeat="todo in todos">
-					<label>
-						<input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}
-					</label>
+				<div class="checkbox"  ng-repeat="todo in todos">
+					<label >
+					<input type="checkbox"   ng-model="todo.flag" ng-init="todo.flag=false"
+					ng-checked="checkTodo()"> {{ todo.text }}
+					</label>	
+
+					<br>
+						{{todo.flag}}
+					<br>
+					<div ng-if="todo.flag">
+					<button type='delete' ng-click="deleteTodo(todo._id)">
+						delete
+					</button>
+</div>
+				
 				</div>
 
 				<p class="text-center" ng-show="loading">

@@ -15,19 +15,21 @@ module.exports = function(app) {
 
 	// api ---------------------------------------------------------------------
 	// get all todos
-	app.get('/api/todos', function(req, res) {
+	app.get('/api/todos', function(req, res){
 
 		// use mongoose to get all todos in the database
 		getTodos(res);
 	});
 
 	// create todo and send back all todos after creation
-	app.post('/api/todos', function(req, res) {
+	app.post('/api/todos', function(req, res)
+	{
 
 		// create a todo, information comes from AJAX request from Angular
-		Todo.create({
+		Todo.create(
+		{
 			text : req.body.text,
-			done : false
+			flag: true
 		}, function(err, todo) {
 			if (err)
 				res.send(err);
@@ -38,8 +40,24 @@ module.exports = function(app) {
 
 	});
 
-	// delete a todo
-	app.delete('/api/todos/:todo_id', function(req, res) {
+	app.put('/api/todos', function(req, res)
+	{
+
+		// create a todo, information comes from AJAX request from Angular
+		Todo.findOneAndUpdate({_id:req.params.todo_id},{flag :true},function(err, todo) {
+			if (err)
+				res.send(err);
+
+			getTodos(res);
+		}
+
+			);
+			// get and return all the todos after you create another
+			
+		});
+
+
+    var deleteCallback =function(req, res) {
 		Todo.remove({
 			_id : req.params.todo_id
 		}, function(err, todo) {
@@ -48,7 +66,9 @@ module.exports = function(app) {
 
 			getTodos(res);
 		});
-	});
+	}
+	// delete a todo
+	app.delete('/api/todos/:todo_id', deleteCallback );
 
 	// application -------------------------------------------------------------
 	app.get('*', function(req, res) {
